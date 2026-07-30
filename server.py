@@ -94,6 +94,8 @@ ENV_VARS = [
     ("GITHUB_TOKEN",             "GitHub token",             "tool",      True),
     ("VOICE_TOOLS_OPENAI_KEY",   "OpenAI (voice/TTS)",       "tool",      True),
     ("HONCHO_API_KEY",           "Honcho (memory)",          "tool",      True),
+    ("FORGE_API_URL",            "Forge orchestrator URL",   "tool",      False),
+    ("FORGE_TOKEN",              "Forge shared token",       "tool",      True),
     ("TELEGRAM_BOT_TOKEN",       "Bot Token",                "telegram",  True),
     ("TELEGRAM_ALLOWED_USERS",   "Allowed User IDs",         "telegram",  False),
     ("DISCORD_BOT_TOKEN",        "Bot Token",                "discord",   True),

@@ -20,7 +20,10 @@ RAILWAY.md
 overview.md
 ref_only/
 ref_ui_only/
-skills/
+# Upstream excludes skills/ because skills normally live in HERMES_HOME.
+# This fork bundles a Forge skill in the image and start.sh installs it into
+# the volume on boot, so the directory has to ship.
+!skills/
 
 img/
 README.md

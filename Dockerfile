@@ -1,7 +1,7 @@
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim
 
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl ca-certificates git && \
+    apt-get install -y --no-install-recommends curl ca-certificates git jq && \
     rm -rf /var/lib/apt/lists/*
 
 # Install hermes-agent as a package (gives us the `hermes` CLI entry point)
@@ -17,6 +17,7 @@ RUN mkdir -p /data/.hermes
 
 COPY server.py /app/server.py
 COPY templates/ /app/templates/
+COPY skills/ /app/skills/
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
