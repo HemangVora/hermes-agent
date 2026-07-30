@@ -6,7 +6,11 @@ __pycache__/
 .claude/
 ref_only/
 ref_ui_only/
-skills/
+# Upstream ignores skills/ because skills are normally created at runtime in
+# HERMES_HOME. This fork versions a Forge skill and ships it in the image, so
+# the directory must be tracked. Runtime-created skills still live in the
+# volume and are never committed.
+!skills/
 overview.md
 LOCAL.md
 RAILWAY.md
