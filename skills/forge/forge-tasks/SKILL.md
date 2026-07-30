@@ -1,6 +1,6 @@
 ---
 name: forge-tasks
-description: "Submit coding tasks to Forge and report progress: builds a branch in a real repo."
+description: "USE THIS whenever the user asks to build, add, change, fix, or review code in a GitHub repository. Forge clones, edits, commits and pushes a branch for you — do not clone or use gh yourself."
 version: 1.0.0
 author: HemangVora
 license: MIT
@@ -20,12 +20,34 @@ Forge executes coding work asynchronously. You submit a task, it clones the
 repository, runs an AI coding provider against it, commits the result, and
 pushes a branch. You report progress back to the user.
 
+## Read this first
+
+**Any request to build, add, change, fix, or review code in a GitHub
+repository goes to Forge.** Do not clone the repository. Do not run `gh` or
+`git`. Do not write the file locally and describe it. Those approaches fail
+here for concrete reasons:
+
+- The repositories are **private**, and this container holds no GitHub
+  credential — a clone returns 404, which reads as "repo does not exist" and
+  sends you down a debugging path that has no end.
+- `gh` is **not installed**.
+- Even a successful local edit changes nothing the user can see. Forge is what
+  produces a branch they can open a pull request from.
+
+If you have already tried cloning and got a 404, that is this situation. Stop
+and submit to Forge instead of asking the user to grant access.
+
 ## When to Use
 
-- "Build a login page in <repo>"
-- "Add tests for the auth module"
-- "Fix the failing build in <repo>"
-- "Review the changes in <repo>"
+- "Build a login page in owner/repo"
+- "Add a CONTRIBUTING.md to owner/repo"
+- "Add tests for the auth module in owner/repo"
+- "Fix the failing build in owner/repo"
+- "Review the changes in owner/repo"
+
+Any phrasing that names a repository and asks for work in it qualifies —
+"build", "add", "create", "write", "change", "update", "fix", "refactor",
+"review". The user does not need to say "Forge".
 
 ## When NOT to Use
 
