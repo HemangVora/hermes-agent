@@ -18,6 +18,7 @@ RUN mkdir -p /data/.hermes
 COPY server.py /app/server.py
 COPY templates/ /app/templates/
 COPY skills/ /app/skills/
+COPY forge_mcp.py /app/forge_mcp.py
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
