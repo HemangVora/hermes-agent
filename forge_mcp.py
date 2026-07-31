@@ -63,9 +63,12 @@ TOOLS = [
         "name": "forge_task_status",
         "description": (
             "Get a Forge task's current status: queued, running, done, failed, or "
-            "cancelled. When done, the result includes the pushed branch name. "
-            "Work takes minutes — poll roughly every 20 seconds, and tell the user "
-            "what stage it is at rather than waiting silently."
+            "cancelled. Work takes minutes — poll roughly every 20 seconds and tell "
+            "the user what stage it is at rather than waiting silently. "
+            "IMPORTANT: branch is null until status is done, because the branch is "
+            "pushed in the final publishing stage. A null branch while status is "
+            "running means the work is still in progress — it does NOT mean the "
+            "push failed. Never report a failure until status is failed."
         ),
         "inputSchema": {
             "type": "object",
@@ -151,7 +154,16 @@ def run_tool(name: str, args: dict) -> dict:
             return {"error": "task_id is required."}
         suffix = "/events" if name == "forge_task_events" else ""
         result = call_forge("GET", f"/tasks/{task_id}{suffix}")
-        return {"events": result} if isinstance(result, list) else result
+        if isinstance(result, list):
+            return {"events": result}
+        # Say plainly what a null branch means, so a mid-run poll is not read
+        # as a failed push.
+        if isinstance(result, dict) and result.get("status") == "running":
+            result["note"] = (
+                "Still running. branch is populated only when status becomes "
+                "done — its absence now is expected, not a failure."
+            )
+        return result
 
     return {"error": f"Unknown tool: {name}"}
 
