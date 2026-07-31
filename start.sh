@@ -15,10 +15,14 @@ fi
 # an MCP tool is a named function with a schema. Idempotent — re-registered on
 # every boot so an image update reaches an existing volume.
 if [ -n "$FORGE_API_URL" ] && [ -n "$FORGE_TOKEN" ]; then
+  # `yes |` answers the "Enable all N tools?" prompt: hermes mcp add is
+  # interactive and aborts with "Cancelled." on a container's non-TTY stdin.
   hermes mcp remove forge >/dev/null 2>&1 || true
-  hermes mcp add --transport stdio forge -- python3 /app/forge_mcp.py >/dev/null 2>&1 \
-    && echo "[forge] MCP server registered" \
-    || echo "[forge] MCP registration failed — check 'hermes mcp list'"
+  if yes | hermes mcp add forge --command python3 --args /app/forge_mcp.py >/dev/null 2>&1; then
+    echo "[forge] MCP server registered"
+  else
+    echo "[forge] MCP registration failed — run 'hermes mcp list' to inspect"
+  fi
 else
   echo "[forge] FORGE_API_URL / FORGE_TOKEN not set; MCP server not registered"
 fi
